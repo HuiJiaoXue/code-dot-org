@@ -2,6 +2,7 @@
  * @overview Component for editing a data table.
  */
 
+import AddColumnButton from './AddColumnButton';
 import AddTableRow from './AddTableRow';
 import { DataView } from '../constants';
 import EditTableRow from './EditTableRow';
@@ -29,6 +30,18 @@ const DataTable = React.createClass({
     onViewChange: React.PropTypes.func.isRequired
   },
 
+  getInitialState() {
+    return {
+      newColumns: []
+    };
+  },
+
+  addColumn(newColumn) {
+    this.setState({
+      newColumns: this.state.newColumns.concat(newColumn)
+    });
+  },
+
   getColumnNames() {
     // Make sure 'id' is the first column.
     let columnNames = ['id'];
@@ -40,6 +53,12 @@ const DataTable = React.createClass({
           columnNames.push(columnName);
         }
       });
+    });
+
+    this.state.newColumns.forEach(columnName => {
+      if (columnNames.indexOf(columnName) === -1) {
+        columnNames.push(columnName);
+      }
     });
 
     return columnNames;
@@ -57,6 +76,8 @@ const DataTable = React.createClass({
           </a>
           &nbsp;&gt; {this.props.tableName}
         </h4>
+
+        <AddColumnButton columns={columnNames} addColumn={this.addColumn}/>
 
         <table>
           <tbody>
