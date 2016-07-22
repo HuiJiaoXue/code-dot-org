@@ -31,7 +31,7 @@ class Plc::LearningModule < ActiveRecord::Base
   NONREQUIRED_MODULE_TYPES = MODULE_TYPES - [REQUIRED_MODULE]
 
   validates_presence_of :plc_course_unit_id
-  validates :module_type, inclusion: {in: MODULE_TYPES}
+  validates :module_type, inclusion: {in: %w(required content practice), message: "%{value} is not a valid module type, its type is #{%{value}.class}, only #{MODULE_TYPES} are allowed and #{MODULE_TYPES.include? %{value}}"}
 
   attr_readonly :plc_course_unit_id
 
